@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="form_mostra_valor_wizard" model="ir.ui.view">
+        <field name="name">Vizualização do valor form</field>
+        <field name="model">mostra.valor.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="variante_check" invisible="1"/>
+                <field name="alternativo_check" invisible="1"/>
+                <field name="some_enviar" invisible="1"/>
+                <field name="desejado_check" invisible="1"/>
+                <field name="some_enviar_variante" invisible="1"/>
+                <field name="some_enviar_alternativo" invisible="1"/>
+                <h2>Configure as opções da cotação</h2>
+                <!--                <group>-->
+                <group>
+                    <group>
+                        <field name="produto_desejado_id" attrs="{'invisible':[('variante_check','=',True)]}">
+                            <tree>
+                                <field name="name"/>
+                                <field name="quantidade_requisitada"/>
+                                <field name="lst_price"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="produto_desejado_related_valor_id"
+                               attrs="{'invisible':[('variante_check','=',True)]}"/>
+                        <field name="produto_desejado_quantidade_related"
+                               attrs="{'invisible':[('variante_check','=',True)]}"/>
+                    </group>
+
+                    <!--                    </group>-->
+
+                </group>
+                <group>
+                    <field name="quantidade_requisitada_related"
+                           attrs="{'invisible':[('variante_check','=',True)]}"/>
+                    <field name="acessorio_desejado" attrs="{'invisible':[('variante_check','=',True)]}">
+                        <tree editable="1">
+                            <field name="name"/>
+                            <field name="qty_available"/>
+                            <field name="quantidade_requisitada"/>
+                        </tree>
+                    </field>
+                </group>
+                <group>
+                    <group>
+                        <field name="variantes_produto_desejado_ids"
+                               attrs="{'invisible':[('variante_check','=',False)]}">
+                            <tree>
+                                <field name="name" readonly="1"/>
+                                <field name="qty_available" string="Estoque" readonly="1"/>
+                                <field name="quantidade_requisitada" sum="Peças selecionadas" readonly="0"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="quantidade_variante_requisitada"
+                               attrs="{'invisible':[('variante_check','=',False)]}"/>
+                    </group>
+                    <group attrs="{'invisible':[('variante_check','=',False)]}">
+                        <field name="estoque_variante"/>
+                        <field name="valor_variante"/>
+                        <field name="acessorio_variante" attrs="{'invisible':[('variante_check','=',False)]}">
+                        <tree editable="1">
+                            <field name="name" readonly="1"/>
+                            <field name="qty_available" readonly="1"/>
+                            <field name="quantidade_requisitada" readonly="0"/>
+                        </tree>
+                    </field>
+                    </group>
+                </group>
+                <hr color="#d3d3d3"></hr>
+                <group>
+                    <group>
+                        <field name="produto_alternativo_id"
+                               attrs="{'invisible':['|',('variante_check','=',False),('alternativo_check','=',False)]}">
+                            <tree editable="0">
+                                <field name="name" readonly="1"/>
+                                <field name="qty_available" string="Estoque"/>
+                                <field name="quantidade_requisitada" sum="Peças selecionadas"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="quantidade_alternativo_requisitada"
+                               attrs="{'invisible':['|',('variante_check','=',False),('alternativo_check','=',False)]}"/>
+                    </group>
+                    <group attrs="{'invisible':['|',('variante_check','=',False),('alternativo_check','=',False)]}">
+                        <field name="estoque_alternativo"/>
+                        <field name="valor_alternativo"/>
+                        <field name="acessorio_alternativo"
+                           attrs="{'invisible':['|',('variante_check','=',False),('alternativo_check','=',False)]}">
+                        <tree editable="1">
+                            <field name="name" readonly="1"/>
+                            <field name="qty_available" readonly="1"/>
+                            <field name="quantidade_requisitada" readonly="0"/>
+                        </tree>
+                    </field>
+                    </group>
+
+                </group>
+                <group>
+                    <group attrs="{'invisible':[('some_enviar','=',False)]}">
+                        <h1>!!ATENÇÃO!!</h1>
+                        <h3>A quantidade requirida em algum produto é maior que o estoque do mesmo. ALTERE A
+                            QUANTIDADE
+                        </h3>
+                    </group>
+
+                    <group attrs="{'invisible':[('some_enviar_variante','=',False)]}">
+                        <h1>!!ATENÇÃO!!</h1>
+                        <h3>A quantidade requirida em algum produto é maior que o estoque do mesmo. ALTERE A
+                            QUANTIDADE
+                        </h3>
+                    </group>
+
+                    <group attrs="{'invisible':[('some_enviar_alternativo','=',False)]}">
+                        <h1>!!ATENÇÃO!!</h1>
+                        <h3>A quantidade requirida em algum produto é maior que o estoque do mesmo. ALTERE A
+                            QUANTIDADE
+                        </h3>
+                    </group>
+
+                </group>
+                <field name="alternativo_check" invisible="1"/>
+                <field name="variante_check" invisible="1"/>
+                <footer>
+                    <button name="wizard_volta_cotacao_variante" string="Verificar variantes" type="object"
+                            class="btn btn-primary"
+                            attrs="{'invisible':['|',('variante_check','=',True),('some_enviar','=',True)]}"/>
+                    <!--                    <button name="wizard_volta_cotacao_todas_opcoes" string="Verificar mais opcoes" type="object"-->
+                    <!--                            class="btn btn-primary"-->
+                    <!--                            attrs="{'invisible':['|','|','|',('variante_check','=',False),('alternativo_check','=',True),('some_enviar','=',True),('some_enviar_variante','=','False')]}"/>-->
+                    <button name="wizard_volta_cotacao_todas_opcoes" string="Verificar mais opcoes" type="object"
+                            class="btn btn-primary"
+                            attrs="{'invisible':['|','|','|','|',('variante_check','=',False),('alternativo_check','=',True),('some_enviar','=',True),('some_enviar_variante','=',True),('some_enviar_alternativo','=',True)]}"/>
+                    <button name="wizard_volta_cotacao_final" string="Finalizar pedido" type="object"
+                            class="btn btn-primary"
+                            attrs="{'invisible':['|','|',('some_enviar','=',True),('some_enviar_variante','=',True),('some_enviar_alternativo','=',True)]}"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_mostra_valor_wizard" model="ir.actions.act_window">
+        <field name="name">Vizualização do Valor action</field>
+        <field name="res_model">mostra.valor.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

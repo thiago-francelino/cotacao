@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+cotacao_wizard_user,access.cotacao_wizard_user,model_cotacao_wizard,base.group_user,1,1,1,1
+mostra_valor_wizard_user,access.mostra_valor_wizard_user,model_mostra_valor_wizard,base.group_user,1,1,1,1
+product_product_user,access.product_product_user,model_product_product,base.group_user,1,1,1,1
+
+
+

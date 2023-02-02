@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="cotacao_wizard_form" model="ir.ui.view">
+        <field name="name">Cotacao form</field>
+        <field name="model">cotacao.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h2>Informações do cliente</h2>
+                    <group>
+                        <group>
+                            <field name="cliente"
+                                   required="1"/>
+                            <field name="data_vencimento_cotacao"/>
+                        </group>
+<!--                        <group>-->
+<!--                            <field name="rota_id"-->
+<!--                                   required="1"/>-->
+<!--                        </group>-->
+                    </group>
+                    <h2>Produtos e configuração do pedido</h2>
+                    <group>
+                        <group>
+                            <field name="produto_desejado_id"
+                                   force_save="1"
+                                   required="1"
+                                   attrs="{'invisible':['|',('variante_check','=',True),('alternativo_check','=',True)]}"
+                                   context="{'tree_view_ref': 'cotacao.tree_many2one_produto_desejado_id_cotacao', 'form_view_ref': 'cotacao.form_many2one_produto_desejado_id_cotacao'}">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="product_template_attribute_value_ids"
+                                           widget="many2many_tags"/>
+                                </tree>
+                            </field>
+                            <field name="nome_produto_desejado_related"
+                                    attrs="{'invisible':[('variante_check','=',False)]}"/>
+
+                            <field name="quantidade_requisitada_related"
+                                   attrs="{'invisible':['|',('variante_check','=',True),('alternativo_check','=',True)]}"
+                                   required="1"/>
+                        </group>
+                        <group>
+                            <field name="codigo_do_produto_busca"
+                            attrs="{'invisible':['|',('variante_check','=',True),('alternativo_check','=',True)]}"/>
+                        </group>
+                    </group>
+                    <button name="wizard_mostra_valor" string="Mostrar estoque e valores" type="object"
+                            attrs="{'invisible':['|','|',('produto_desejado_id','=',False),('variante_check','=',True),('alternativo_check','=',True)]}"
+                            class="btn btn-primary"/>
+                    <hr color="#d3d3d3"></hr>
+                    <!--                    <group>-->
+                    <field name="produto_desejado_quantidade_related" invisible="1"/>
+                    <field name="template_related" invisible="1"/>
+                    <field name="variante_check" invisible="1"/>
+                    <field name="alternativo_check" invisible="1"/>
+                    <field name="optional_product_id" invisible="1"/>
+<!--                    <field name="accessory_product_related_ids" invisible="1"/>-->
+
+                    <!--                    <group>-->
+                    <!--                        <group>-->
+                    <!--                            , 'form_view_ref': 'cotacao.form_many2one_produto_desejado_id_cotacao'-->
+                    <!--                    <group>-->
+                    <!--                        <field name="mostrar_informações_variante" attrs="{'invisible':[('variante_check','=',False)]}"/>-->
+
+                    <!--                    </group>-->
+                    <!--                            <h3 attrs="{'invisible':[('variante_check','=',False)]}">Selecione as variantes do produto a abaixo:</h3>-->
+
+                    <group>
+                        <field name="variantes_produto_desejado_ids"
+                               attrs="{'invisible':[('variante_check','=',False)]}"
+                               context="{'tree_view_ref': 'cotacao.tree_many2one_produto_desejado_id_cotacao', 'form_view_ref': 'cotacao.form_many2one_produto_desejado_id_cotacao'}">
+                            <tree editable="1">
+                                <field name="name"
+                                       readonly="1"/>
+                                <field name="product_template_attribute_value_ids"
+                                       widget="many2many_tags"
+                                       readonly="1"/>
+                                <field name="quantidade_requisitada"/>
+                            </tree>
+                        </field>
+                        <field name="quantidade_variante_requisitada"
+                                attrs="{'invisible':[('variante_check','=',False)]}"/>
+                        <!--                            <h3 attrs="{'invisible':[('mostrar_informações_variante','=',False)]}">Clique nos produtos abaixo para obter mais informações:</h3>-->
+                        <!--                            <field name="campo_observacao"-->
+                        <!--                                   attrs="{'invisible':[('mostrar_informações_variante','=',False)]}"-->
+                        <!--                                   context="{'form_view_ref':'cotacao.form_many2one_produto_desejado_id_cotacao'}"-->
+                        <!--                                   readonly="1">-->
+                        <!--                                <tree>-->
+                        <!--                                    <field name="name"/>-->
+                        <!--                                    <field name="product_template_attribute_value_ids"-->
+                        <!--                                           widget="many2many_tags"/>-->
+                        <!--                                    <field name="quantidade_requisitada"/>-->
+                        <!--                                </tree>-->
+                        <!--                            </field>-->
+
+                        <button name="wizard_mostra_valor_variante"
+                                string="Estoque e valores"
+                                type="object"
+                                class="btn btn-primary"
+                                attrs="{'invisible':['|','|',('variante_check','=',False),('alternativo_check','=',True),('variantes_produto_desejado_ids','=',False)]}"/>
+                    </group>
+                    <!--                            <group>-->
+                    <!--                                <field name="mostrar_informações_alternativo" attrs="{'invisible':['|',('variante_check','=',False),('alternativo_check','=',False)]}"/>-->
+                    <!--                            </group>-->
+                    <!--                            <h3 attrs="{'invisible':['|',('alternativo_check','=',False),('variante_check','=',False)]}">Selecione os produtos alternativos abaixo:</h3>-->
+                    <group>
+                        <field name="produto_alternativo_id"
+                               context="{'tree_view_ref': 'cotacao.tree_many2one_produto_desejado_id_cotacao', 'form_view_ref': 'cotacao.form_many2one_produto_desejado_id_cotacao'}"
+                               attrs="{'invisible':['|',('alternativo_check','=',False),('variante_check','=',False)]}">
+                            <tree editable="1">
+                                <field name="name"
+                                       readonly="1"/>
+                                <field name="product_template_attribute_value_ids"
+                                       widget="many2many_tags"
+                                       readonly="1"/>
+                                <field name="quantidade_requisitada"
+                                       readonly="0"/>
+                            </tree>
+                        </field>
+                        <field name="quantidade_alternativo_requisitada"
+                                attrs="{'invisible':['|',('alternativo_check','=',False),('variante_check','=',False)]}"/>
+                        <!--                            <field name="campo_observacao_alternativo"-->
+                        <!--                                   attrs="{'invisible':['|','|',('alternativo_check','=',False),('variante_check','=',False),('mostrar_informações_alternativo','=',False)]}"-->
+                        <!--                                   context="{'form_view_ref':'cotacao.form_many2one_produto_desejado_id_cotacao'}"-->
+                        <!--                                   readonly="1">-->
+                        <!--                                <tree>-->
+                        <!--                                    <field name="name"-->
+                        <!--                                           readonly="1"/>-->
+                        <!--                                    <field name="product_template_attribute_value_ids"-->
+                        <!--                                           widget="many2many_tags"-->
+                        <!--                                           readonly="1"/>-->
+                        <!--                                    <field name="quantidade_requisitada"/>-->
+                        <!--                                </tree>-->
+                        <!--                            </field>-->
+                        <button name="wizard_mostra_valor_variante_todas_opcoes"
+                                string="Estoque e valores"
+                                type="object"
+                                class="btn btn-primary"
+                                attrs="{'invisible':['|',('variante_check','=',False),('alternativo_check','=',False)]}"/>
+                    </group>
+                    <!--                            context="{'form_view_ref': 'cotacao.form_many2one_produto_desejado_id_cotacao'}"-->
+                    <!--                        </group>-->
+                    <!--                    </group>-->
+                    <h3>Carrinho:</h3>
+                    <field name="carrinho_geral_ids">
+                        <tree editable="1">
+                            <field name="name" readonly="1"/>
+                            <field name="product_template_attribute_value_ids" widget="many2many_tags" readonly="1"/>
+                            <field name="quantidade_requisitada" readonly="1"/>
+                            <field name="qty_available" readonly="1"/>
+                            <field name="etq_insuficiente" readonly="0"/>
+                            <field name="vai_comprar"/>
+                        </tree>
+                    </field>
+
+                    <field name="carrinho_ids" readonly="1">
+                        <tree editable="1">
+                            <field name="name" readonly="1"/>
+                            <field name="product_template_attribute_value_ids" widget="many2many_tags"/>
+                            <field name="quantidade_requisitada"/>
+                            <field name="etq_insuficiente"/>
+                            <field name="vai_comprar"/>
+                        </tree>
+                    </field>
+                    <footer>
+                        <button name="cria_prepedido" string="Criar pré-pedido" type="object"
+                                class="btn btn-primary"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="tree_many2one_produto_desejado_id_cotacao" model="ir.ui.view">
+        <field name="name">tree_many2one_produto_desejado_id</field>
+        <field name="model">product.product</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="product_template_attribute_value_ids" widget="many2many_tags"/>
+                <field name="quantidade_requisitada"/>
+                <!--                <field name="qty_available"/>-->
+            </tree>
+        </field>
+    </record>
+
+    <record id="form_many2one_produto_desejado_id_cotacao" model="ir.ui.view">
+        <field name="name">form_many2one_produto_desejado_id</field>
+        <field name="model">product.product</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="image_1920" widget="image" string="Imagem do produto" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="name" readonly="1"/>
+                        <field name="barcode" readonly="1"/>
+                        <field name="accessory_product_ids" readonly="1" widget="many2many_tags"/>
+                        <field name="type" readonly="1"/>
+                        <field name="fipe_ids" readonly="1" widget="many2many_tags"/>
+                        <!--                        <h3>!ATENÇÃO!</h3>-->
+                        <!--                        <h6>AS VARIANTES DE PRODUTO A SEGUIR NÃO NECESSARIAMENTE TEM SALDO NO ESTOQUE</h6>-->
+                        <!--                        <field name="product_template_variant_value_ids" widget="many2many_tags"-->
+                        <!--                               groups="product.group_product_variant"/>-->
+                    </group>
+                </group>
+                <footer>
+
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_cotacao_wizard" model="ir.actions.act_window">
+        <field name="name">Cotação</field>
+        <field name="res_model">cotacao.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+    <menuitem id="cotacao_wizard_sub_menu" name="Cotação" parent="sale.sale_order_menu"
+              action="action_cotacao_wizard"/>
+</odoo>
+
