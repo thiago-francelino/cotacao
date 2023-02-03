@@ -13,6 +13,7 @@
         "security/ir.model.access.csv",
         "wizard/cotacao_wizard_view.xml",
         "wizard/mostra_valor_wizard_view.xml",
+        "views/inherit_sale_order_view.xml",
         "views/carrinho_view.xml",
     ],
 }

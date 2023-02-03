@@ -244,6 +244,19 @@ class MostraValorWizard(models.TransientModel):
 
     # _____-------=====As funções a seguir voltam pra primeira tela=====-------_____
 
+
+    def cria_objeto_carrinho(self, objeto):
+
+        vals_list = {
+            'product_id': objeto.id,
+            'cotacao_id': self.env.context.get("active_id"),
+            'vai_comprar': objeto.vai_comprar,
+            'etq_insuficiente': objeto.etq_insuficiente,
+            'quantidade_requisitada': objeto.quantidade_requisitada,
+        }
+        self.env['carrinho'].create(vals_list)
+
+
     def wizard_volta_cotacao_variante(self):
         vetor = []
         vetor_geral = []
@@ -257,9 +270,11 @@ class MostraValorWizard(models.TransientModel):
             for rec in self.acessorio_desejado:
                 vetor_geral.append(rec.id)
                 vetor.append(rec.id)
+                self.cria_objeto_carrinho(rec)
 
         vetor_geral.append(self.produto_desejado_id.id)
         vetor.append(self.produto_desejado_id.id)
+        self.cria_objeto_carrinho(self.produto_desejado_id)
 
         ctx = dict()
         ctx.update({
@@ -304,16 +319,19 @@ class MostraValorWizard(models.TransientModel):
             for rec in self.acessorio_variante:
                 vetor_geral.append(rec.id)
                 vetor.append(rec.id)
+                self.cria_objeto_carrinho(rec)
 
         if self.variantes_produto_desejado_ids:
             if self.desejado_insuficiente:
                 self.variantes_produto_desejado_ids.alt_flt_estoque = True
                 vetor_geral.append(self.variantes_produto_desejado_ids.id)
                 vetor.append(self.variantes_produto_desejado_ids.id)
+                self.cria_objeto_carrinho(self.variantes_produto_desejado_ids)
             else:
                 self.variantes_produto_desejado_ids.alt_flt_estoque = False
                 vetor_geral.append(self.variantes_produto_desejado_ids.id)
                 vetor.append(self.variantes_produto_desejado_ids.id)
+                self.cria_objeto_carrinho(self.variantes_produto_desejado_ids)
 
         ctx = dict()
         ctx.update({
@@ -352,45 +370,51 @@ class MostraValorWizard(models.TransientModel):
 
         for rec2 in self.carrinho_geral_ids.ids:
             vetor_geral.append(rec2)
+
         if self.produto_desejado_id:
             vetor_geral.append(self.produto_desejado_id.id)
             vetor.append(self.produto_desejado_id.id)
+            self.cria_objeto_carrinho(self.produto_desejado_id)
 
         if self.acessorio_desejado:
             for rec in self.acessorio_desejado:
                 vetor_geral.append(rec.id)
                 vetor.append(rec.id)
+                self.cria_objeto_carrinho(rec)
 
         if self.acessorio_variante:
             for rec in self.acessorio_variante:
                 vetor_geral.append(rec.id)
                 vetor.append(rec.id)
+                self.cria_objeto_carrinho(rec)
 
         if self.variantes_produto_desejado_ids:
             if self.desejado_insuficiente:
                 self.variantes_produto_desejado_ids.alt_flt_estoque.alt_flt_estoque = True
                 vetor_geral.append(self.variantes_produto_desejado_ids.id)
                 vetor.append(self.variantes_produto_desejado_ids.id)
+                self.cria_objeto_carrinho(self.variantes_produto_desejado_ids)
             else:
                 self.variantes_produto_desejado_ids.alt_flt_estoque = False
                 vetor_geral.append(self.variantes_produto_desejado_ids.id)
                 vetor.append(self.variantes_produto_desejado_ids.id)
+                self.cria_objeto_carrinho(self.variantes_produto_desejado_ids)
 
         if self.acessorio_alternativo:
             for rec in self.acessorio_alternativo:
                 vetor_geral.append(rec.id)
                 vetor.append(rec.id)
+                self.cria_objeto_carrinho(rec)
 
         if self.produto_alternativo_id:
             if self.desejado_insuficiente:
-                self.produto_alternativo_id.alt_flt_estoque = True
                 vetor_geral.append(self.produto_alternativo_id.id)
                 vetor.append(self.produto_alternativo_id.id)
+                self.cria_objeto_carrinho(self.produto_alternativo_id)
             else:
-                self.produto_alternativo_id.alt_flt_estoque = False
                 vetor_geral.append(self.produto_alternativo_id.id)
                 vetor.append(self.produto_alternativo_id.id)
-
+                self.cria_objeto_carrinho(self.produto_alternativo_id)
         ctx = dict()
         ctx.update({
             'default_cliente': self.cliente.id,
@@ -404,17 +428,18 @@ class MostraValorWizard(models.TransientModel):
             'default_variantes_produto_desejado_ids': False,
             'default_produto_alternativo_id': False,
         })
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'nome',
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'cotacao.wizard',
-            'views': [
-                [
-                    self.env.ref("cotacao.cotacao_wizard_form").id,
-                    'form']
-            ],
-            'context': ctx,
-            'target': 'new'
-        }
+        return
+        # return {
+        #     'type': 'ir.actions.act_window',
+        #     'name': 'nome',
+        #     'view_type': 'form',
+        #     'view_mode': 'form',
+        #     'res_model': 'cotacao.wizard',
+        #     'views': [
+        #         [
+        #             self.env.ref("cotacao.cotacao_wizard_form").id,
+        #             'form']
+        #     ],
+        #     'context': ctx,
+        #     'target': 'new'
+        # }

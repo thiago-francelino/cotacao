@@ -1,14 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="extencao_form" model="ir.ui.view">
-        <field name="name">extencao</field>
-        <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_order_form"/>
+    <record id="carrinho_view" model="ir.ui.view">
+        <field name="name">Carrinho view</field>
+        <field name="model">carrinho</field>
         <field name="arch" type="xml">
-            <field name="order_line" position="after">
-                <field name="todos_produtos"/>
-            </field>
+            <tree>
+                <field name="product_id"/>
+                <field name="cotacao_id"/>
+                <field name="vai_comprar"/>
+                <field name="etq_insuficiente"/>
+                <field name="quantidade_requisitada"/>
+            </tree>
         </field>
     </record>
-</odoo>
 
+    <record id="carrinho_form" model="ir.ui.view">
+        <field name="name">Carrinho form</field>
+        <field name="model">carrinho</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="product_id"/>
+                    <field name="cotacao_id"/>
+                    <field name="vai_comprar"/>
+                    <field name="etq_insuficiente"/>
+                    <field name="quantidade_requisitada"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="carrinho_action" model="ir.actions.act_window">
+        <field name="name">Carrinho action</field>
+        <field name="res_model">carrinho</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="carrinho_root_menu" name="Carrinho" action="carrinho_action"
+              parent="sale.sale_order_menu"/>
+</odoo>

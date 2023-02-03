@@ -3,31 +3,21 @@ from odoo import models, fields, api, _
 
 class InheritProduct(models.Model):
     _name = 'carrinho'
-    _inherits = {
-        'product.product': 'product_id',
-    }
 
     product_id = fields.Many2one('product.product')
 
+    cotacao_id = fields.Many2one('cotacao.wizard')
+
     vai_comprar = fields.Boolean(
-        string="Sera comprado"
-    )
-
-    de_interesse = fields.Boolean(
-        string="Item de interesse"
-    )
-
-    alt_flt_estoque = fields.Boolean(
-        string="Alternativa a falta de estoque",
-        help="É uma alternativa a falta de estoque "
-             "ou cliente apresentou interesse alem "
-             "do produto no qual ligou sobre"
+        string="Sera comprado",
+        default=True
     )
 
     etq_insuficiente = fields.Boolean(
-        string="Estoque atende a demanda",
+        string="Atende a demanda?",
         help="Não atende ou atende "
-             "parcialmente a demanda"
+             "parcialmente a demanda",
+        default=False
     )
 
     quantidade_requisitada = fields.Integer(

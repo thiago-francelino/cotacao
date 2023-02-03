@@ -2,12 +2,18 @@ from odoo import models, fields, api, _
 from datetime import date
 
 
-class PagamentoDireto(models.TransientModel):
+# class PagamentoDireto(models.TransientModel):
+class CotacaoWizard(models.Model):
     _name = "cotacao.wizard"
 
     cliente = fields.Many2one(
         'res.partner',
         string="Cliente"
+    )
+
+    cotacoes_cliente = fields.One2many(
+        related="cliente.cotacoes_id",
+        string="Cotações anteriores"
     )
 
     rota_id = fields.Many2one(
@@ -95,7 +101,7 @@ class PagamentoDireto(models.TransientModel):
 
     # _____-------=====Campos relacionados aos carrinhos, o carrinho q o vendedor pode editar é o carrinho_ids=====-------_____
 
-    carrinho_ids = fields.Many2many(
+    carrinho_ids = fields.Many2one(
         'product.product',
         relation='rel_carrinho_product_cotacao',
         string="Carrinho"
@@ -110,6 +116,12 @@ class PagamentoDireto(models.TransientModel):
              " serão de fato comprados"
     )
 
+    modulo_carrinho = fields.One2many(
+        'carrinho',
+        'cotacao_id',
+        string="Modulo de carrinho"
+    )
+
     variante_check = fields.Boolean(defalt=False)
     alternativo_check = fields.Boolean(defalt=False)
     desejado_check = fields.Boolean(defalt=False)
@@ -118,11 +130,11 @@ class PagamentoDireto(models.TransientModel):
 
     vetor_geral = []
 
-    temp = fields.Many2many(
-        'product.product',
-        relation='rel_temp',
-        string="Temp",
-    )
+    # temp = fields.Many2many(
+    #     'product.product',
+    #     relation='rel_temp',
+    #     string="Temp",
+    # )
 
     def cria_prepedido(self):
         vals_list = {
@@ -142,9 +154,22 @@ class PagamentoDireto(models.TransientModel):
                                            'product_uom_qty': produtos.quantidade_requisitada})]
                 })
                 quote.write(vals_lines)
+
             produtos.quantidade_requisitada = 0
             produtos.etq_insuficiente = False
             produtos.vai_comprar = True
+
+        # for rec in self.modulo_carrinho.ids:
+        #     vals_lines2 = ({
+        #         'todos_produtos': rec
+        #     })
+        #     quote.write(vals_lines2)
+
+        for rec in self.modulo_carrinho:
+            vals_lines2 = ({
+                'todos_produtos': rec
+            })
+            quote.write(vals_lines2)
         ctx = dict()
         return {
             'type': "ir.actions.act_window",

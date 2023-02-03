@@ -13,6 +13,16 @@
                                    required="1"/>
                             <field name="data_vencimento_cotacao"/>
                         </group>
+                        <group>
+<!--                            <field name="cotacoes_cliente" attrs="{'invisible':[('cliente','=',False)]}" list_options="{'limit': 7}" widget="many2many"/>-->
+                            <field name="cotacoes_cliente" attrs="{'invisible':[('cliente','=',False)]}">
+                                <tree limit="4">
+                                    <field name="id"/>
+                                    <field name="cliente"/>
+                                    <field name="data_vencimento_cotacao"/>
+                                </tree>
+                            </field>
+                        </group>
                     </group>
                     <h2>Produtos e configuração do pedido</h2>
                     <group>
@@ -108,6 +118,8 @@
                             <field name="vai_comprar"/>
                         </tree>
                     </field>
+                    <h3>Modulo de carrinho:</h3>
+                    <field name="modulo_carrinho"/>
                     <h3>Carrinho invisível:</h3>
                     <field name="carrinho_ids" readonly="1">
                         <tree editable="1">
@@ -172,7 +184,8 @@
         <field name="name">Cotação</field>
         <field name="res_model">cotacao.wizard</field>
         <field name="view_mode">form</field>
-        <field name="target">new</field>
+<!--        <field name="target">new</field>-->
+        <field name="target">current</field>
     </record>
 
 

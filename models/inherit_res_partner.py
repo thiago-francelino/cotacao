@@ -6,6 +6,11 @@ class InheritResPartner(models.Model):
 
     _inherit = 'res.partner'
 
+    cotacoes_id = fields.One2many(
+        'cotacao.wizard',
+        'cliente'
+    )
+
 
     @api.model
     def name_search(self, name, args=None, operator='ilike', limit=100):
