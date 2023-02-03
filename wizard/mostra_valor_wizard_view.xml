@@ -12,7 +12,6 @@
                 <field name="some_enviar_variante" invisible="1"/>
                 <field name="some_enviar_alternativo" invisible="1"/>
                 <h2>Configure as opções da cotação</h2>
-                <!--                <group>-->
                 <group>
                     <group>
                         <field name="produto_desejado_id" attrs="{'invisible':[('variante_check','=',True)]}">
@@ -29,9 +28,6 @@
                         <field name="produto_desejado_quantidade_related"
                                attrs="{'invisible':[('variante_check','=',True)]}"/>
                     </group>
-
-                    <!--                    </group>-->
-
                 </group>
                 <group>
                     <field name="quantidade_requisitada_related"
@@ -39,7 +35,7 @@
                     <field name="acessorio_desejado" attrs="{'invisible':[('variante_check','=',True)]}">
                         <tree editable="1">
                             <field name="name"/>
-                            <field name="qty_available"/>
+                            <field name="virtual_available"/>
                             <field name="quantidade_requisitada"/>
                         </tree>
                     </field>
@@ -50,7 +46,7 @@
                                attrs="{'invisible':[('variante_check','=',False)]}">
                             <tree>
                                 <field name="name" readonly="1"/>
-                                <field name="qty_available" string="Estoque" readonly="1"/>
+                                <field name="virtual_available" string="Estoque" readonly="1"/>
                                 <field name="quantidade_requisitada" sum="Peças selecionadas" readonly="0"/>
                             </tree>
                         </field>
@@ -63,12 +59,12 @@
                         <field name="estoque_variante"/>
                         <field name="valor_variante"/>
                         <field name="acessorio_variante" attrs="{'invisible':[('variante_check','=',False)]}">
-                        <tree editable="1">
-                            <field name="name" readonly="1"/>
-                            <field name="qty_available" readonly="1"/>
-                            <field name="quantidade_requisitada" readonly="0"/>
-                        </tree>
-                    </field>
+                            <tree editable="1">
+                                <field name="name" readonly="1"/>
+                                <field name="virtual_available" readonly="0"/>
+                                <field name="quantidade_requisitada" readonly="0"/>
+                            </tree>
+                        </field>
                     </group>
                 </group>
                 <hr color="#d3d3d3"></hr>
@@ -78,7 +74,7 @@
                                attrs="{'invisible':['|',('variante_check','=',False),('alternativo_check','=',False)]}">
                             <tree editable="0">
                                 <field name="name" readonly="1"/>
-                                <field name="qty_available" string="Estoque"/>
+                                <field name="virtual_available" string="Estoque"/>
                                 <field name="quantidade_requisitada" sum="Peças selecionadas"/>
                             </tree>
                         </field>
@@ -91,15 +87,14 @@
                         <field name="estoque_alternativo"/>
                         <field name="valor_alternativo"/>
                         <field name="acessorio_alternativo"
-                           attrs="{'invisible':['|',('variante_check','=',False),('alternativo_check','=',False)]}">
-                        <tree editable="1">
-                            <field name="name" readonly="1"/>
-                            <field name="qty_available" readonly="1"/>
-                            <field name="quantidade_requisitada" readonly="0"/>
-                        </tree>
-                    </field>
+                               attrs="{'invisible':['|',('variante_check','=',False),('alternativo_check','=',False)]}">
+                            <tree editable="1">
+                                <field name="name" readonly="1"/>
+                                <field name="virtual_available" readonly="0"/>
+                                <field name="quantidade_requisitada" readonly="0"/>
+                            </tree>
+                        </field>
                     </group>
-
                 </group>
                 <group>
                     <group attrs="{'invisible':[('some_enviar','=',False)]}">
@@ -108,21 +103,18 @@
                             QUANTIDADE
                         </h3>
                     </group>
-
                     <group attrs="{'invisible':[('some_enviar_variante','=',False)]}">
                         <h1>!!ATENÇÃO!!</h1>
                         <h3>A quantidade requirida em algum produto é maior que o estoque do mesmo. ALTERE A
                             QUANTIDADE
                         </h3>
                     </group>
-
                     <group attrs="{'invisible':[('some_enviar_alternativo','=',False)]}">
                         <h1>!!ATENÇÃO!!</h1>
                         <h3>A quantidade requirida em algum produto é maior que o estoque do mesmo. ALTERE A
                             QUANTIDADE
                         </h3>
                     </group>
-
                 </group>
                 <field name="alternativo_check" invisible="1"/>
                 <field name="variante_check" invisible="1"/>
@@ -130,9 +122,6 @@
                     <button name="wizard_volta_cotacao_variante" string="Verificar variantes" type="object"
                             class="btn btn-primary"
                             attrs="{'invisible':['|',('variante_check','=',True),('some_enviar','=',True)]}"/>
-                    <!--                    <button name="wizard_volta_cotacao_todas_opcoes" string="Verificar mais opcoes" type="object"-->
-                    <!--                            class="btn btn-primary"-->
-                    <!--                            attrs="{'invisible':['|','|','|',('variante_check','=',False),('alternativo_check','=',True),('some_enviar','=',True),('some_enviar_variante','=','False')]}"/>-->
                     <button name="wizard_volta_cotacao_todas_opcoes" string="Verificar mais opcoes" type="object"
                             class="btn btn-primary"
                             attrs="{'invisible':['|','|','|','|',('variante_check','=',False),('alternativo_check','=',True),('some_enviar','=',True),('some_enviar_variante','=',True),('some_enviar_alternativo','=',True)]}"/>
